@@ -77,7 +77,7 @@
       <div class="col-lg-9">
         <div class="container my-5">
           <?= $this->renderSection('content') ?>
-          <div class="nav-btn mobile-only bg-danger text-white">
+          <div class="nav-btn mobile-only bg-danger text-white" draggable="true">
             <i class="bi bi-list" id="navBtn"></i>
           </div>
         </div>

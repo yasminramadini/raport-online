@@ -50,5 +50,27 @@ class Validation
         'is_unique' => 'nama kelas sudah ada'
         ]
       ];
+      
+    public $mapel = [
+      'nama' => 'required|alpha_numeric_punct|is_unique[mapel.nama]',
+      'tipe' => 'required|alpha_numeric_space',
+      'kkm' => 'required|integer'
+      ];
+      
+    public $mapel_errors = [
+      'nama' => [
+        'required' => 'nama mapel wajib diisi',
+        'alpha_numeric_punct' => 'nama mapel tidak valid',
+        'is_unique' => 'nama mapel sudah ada'
+        ],
+      'tipe' => [
+        'required' => 'tipe mapel wajib diisi',
+        'alpha_numeric_space' => 'nama mapel tidak valid'
+        ],
+      'kkm' => [
+        'required' => 'KKM wajib diisi',
+        'integer' => 'KKM harus angka'
+        ]
+      ];
     //--------------------------------------------------------------------
 }

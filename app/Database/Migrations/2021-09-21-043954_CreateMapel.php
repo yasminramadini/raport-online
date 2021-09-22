@@ -17,7 +17,15 @@ class CreateMapel extends Migration
             ],
           'nama' => [
             'type' => 'VARCHAR',
-            'constraint' => 20
+            'constraint' => 100
+            ],
+          'tipe' => [
+            'type' => 'VARCHAR',
+            'constraint' => 30
+            ],
+          'kkm' => [
+            'type' => 'INT',
+            'constraint' => 3
             ],
           'created_at' => [
             'type' => 'DATETIME'

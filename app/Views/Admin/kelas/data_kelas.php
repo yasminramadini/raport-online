@@ -27,7 +27,7 @@
 
       <form method="post" action="/admin/data_kelas">
         <div class="input-group">
-          <input type="search" name="keyword" class="form-control" placeholder="Cari kelas...">
+          <input type="search" name="keyword" class="form-control" placeholder="Cari kelas..." autocomplete="off">
           <button type="submit" class="btn btn-success" name="cari">Cari</button>
         </div>
       </form>
