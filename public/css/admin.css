@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 aside {
   position: fixed;
   height: 100%;
@@ -6,6 +10,7 @@ aside {
   width: 300px;
   overflow-y: auto;
   transition: all 0.7s;
+  z-index: 10;
 }
 
 aside ul {
@@ -67,10 +72,11 @@ aside a.active {
     line-height: 70px;
     border-radius: 50%;
     font-size: 50px;
-    bottom: 30px;
-    right: 20px;
+    bottom: 150px;
+    right: 50px;
     box-shadow: 0 0 15px rgba(0,0,0,0.25);
     transition: all 0.7s;
+    z-index: 20;
   }
   
   .nav-toggle {

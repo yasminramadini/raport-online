@@ -39,5 +39,16 @@ class Validation
 
     //--------------------------------------------------------------------
     // Rules
+    public $kelas = [
+      'nama' => 'required|alpha_numeric_punct|is_unique[kelas.nama]'
+      ];
+      
+    public $kelas_errors = [
+      'nama' => [
+        'required' => '{field} wajib diisi',
+        'alpha_numeric_punct' => '{field} tidak valid',
+        'is_unique' => 'nama kelas sudah ada'
+        ]
+      ];
     //--------------------------------------------------------------------
 }

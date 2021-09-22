@@ -40,7 +40,7 @@
       </div>
     </nav>
 
-    <div class="row">
+    <div class="row" style="overflow-x: hidden">
       <div class="col-lg-3">
         <aside class="bg-dark text-white p-3" id="sidebar">
           <div class="profil my-4 text-center">
@@ -49,22 +49,23 @@
             <span class="text-muted">Administrator</span>
           </div>
           <hr>
+          <?php $uri = uri_string() ?>
           <nav>
             <ul>
               <li class="nav-item">
-                <a href="<?= base_url('admin') ?>" class="nav-link text-white active"><i class="bi bi-journals me-2"></i>Data Raport</a>
+                <a href="<?= base_url('admin') ?>" class="nav-link text-white <?= $uri === 'admin' ? 'active' : '' ?>"><i class="bi bi-journals me-2"></i>Data Raport</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('admin/mapel') ?>" class="nav-link text-white"><i class="bi bi-stack me-2"></i>Mata Pelajaran</a>
+                <a href="<?= base_url('admin/mapel') ?>" class="nav-link text-white <?= $uri === 'admin/mapel' ? 'active' : '' ?>"><i class="bi bi-stack me-2"></i>Mata Pelajaran</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('admin/tipe_ujian') ?>" class="nav-link text-white"><i class="bi bi-file-earmark-post me-2"></i>Tipe Ujian</a>
+                <a href="<?= base_url('admin/tipe_ujian') ?>" class="nav-link text-white <?= $uri === 'admin/tipe_ujian' ? 'active' : '' ?>"><i class="bi bi-file-earmark-post me-2"></i>Tipe Ujian</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('admin/data_kelas') ?>" class="nav-link text-white"><i class="bi bi-easel me-2"></i>Data Kelas</a>
+                <a href="<?= base_url('admin/data_kelas') ?>" class="nav-link text-white <?= $uri === 'admin/data_kelas' ? 'active' : '' ?>"><i class="bi bi-easel me-2"></i>Data Kelas</a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url('admin/data_sekolah') ?>" class="nav-link text-white"><i class="bi bi-building me-2"></i>Data Sekolah</a>
+                <a href="<?= base_url('admin/data_sekolah') ?>" class="nav-link text-white <?= $uri === 'admin/data_sekolah' ? 'active' : '' ?>"><i class="bi bi-building me-2"></i>Data Sekolah</a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url('logout') ?>" class="nav-link text-white"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a>
