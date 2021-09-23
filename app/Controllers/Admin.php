@@ -12,7 +12,7 @@ class Admin extends BaseController
       $this->kelasModel = new \App\Models\KelasModel();
       $this->mapelModel = new \App\Models\MapelModel();
       $this->sekolahModel = new \App\Models\SekolahModel();
-      helper('filesystem');
+      $this->ujianModel = new \App\Models\UjianModel();
     }
     
     public function index()
@@ -55,8 +55,27 @@ class Admin extends BaseController
     
     public function tipe_ujian()
     {
+      //jika ada searching 
+      $keyword = $this->request->getPost('keyword');
+      if($keyword) {
+        $ujian = $this->ujianModel->cari_tipe_ujian($keyword);
+      } else {
+        $ujian = $this->ujianModel;
+      }
+      
+      //penomoran
+      if(!$this->request->getGet('page')) {
+        $current_page = 1;
+      }
+      else {
+        $current_page = $this->request->getGet('page');
+      }
+      
       $data = [
-        'title' => 'Tipe Ujian'
+        'title' => 'Tipe Ujian',
+        'ujian' => $ujian->orderBy('id', 'DESC')->paginate(5),
+        'pager' => $this->ujianModel->pager,
+        'current_page' => $current_page
         ];
         
       return view('admin/ujian/tipe_ujian', $data);
@@ -310,6 +329,81 @@ class Admin extends BaseController
         
       session()->setFlashdata('update', 'Data sekolah berhasil diupdate');
       return redirect()->to('/admin/data_sekolah');
+    }
+    
+    public function tambah_tipe_ujian()
+    {
+      session();
+      
+      $data = [
+        'title' => 'Tambah Tipe Ujian',
+        'errors' => $this->validation
+        ];
+      
+      return view('admin/ujian/tambah_tipe_ujian', $data);
+    }
+    
+    public function store_tipe_ujian()
+    {
+      $data = [
+        'nama' => $this->request->getPost('nama')
+        ];
+        
+      //validasi data 
+      $this->validation->run($data, 'tipe_ujian');
+      $errors = $this->validation->getErrors();
+      
+      //jika ada errors
+      if($errors) {
+        return redirect()->back()->withInput();
+      }
+      
+      //jika tidak ada errors, input data 
+      $this->ujianModel->insert($data);
+      session()->setFlashdata('tambah', 'Tipe ujian berhasil ditambahkan');
+      return redirect()->to('/admin/tipe_ujian');
+    }
+    
+    public function edit_tipe_ujian($id)
+    {
+      session();
+      
+      $data = [
+        'ujian' => $this->ujianModel->find($id),
+        'title' => 'Edit Tipe Ujian',
+        'errors' => $this->validation
+        ];
+        
+      return view('admin/ujian/edit_tipe_ujian', $data);
+    }
+    
+    public function update_tipe_ujian()
+    {
+      $data = [
+        'nama' => $this->request->getPost('nama')
+        ];
+        
+      //validasi data 
+      $this->validation->run($data, 'tipe_ujian');
+      $errors = $this->validation->getErrors();
+      
+      //jika ada errors
+      if($errors) {
+        return redirect()->back()->withInput();
+      }
+      
+      //jika tidak ada errors, update data 
+      $this->ujianModel->update($this->request->getPost('id'), $data);
+      session()->setFlashdata('update', 'Tipe ujian berhasil diupdate');
+      return redirect()->to('/admin/tipe_ujian');
+    }
+    
+    public function hapus_tipe_ujian()
+    {
+      $id = $this->request->getPost('id');
+      $this->ujianModel->delete($id);
+      session()->setFlashdata('hapus', 'Tipe ujian berhasil dihapus');
+      return redirect()->to('/admin/tipe_ujian');
     }
     
 }

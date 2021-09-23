@@ -12,12 +12,12 @@ class CreateTipeUjian extends Migration
           'id' => [
             'type' => 'INT',
             'constraint' => 11,
-            'auto_increment' => 11,
+            'auto_increment' => true,
             'unsigned' => true
             ],
           'nama' => [
             'type' => 'VARCHAR',
-            'constraint' => 20
+            'constraint' => 50
             ],
           'created_at' => [
             'type' => 'DATETIME'

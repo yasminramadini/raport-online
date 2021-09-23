@@ -89,5 +89,17 @@ class Validation
           'is_image' => 'Yang anda upload bukan gambar'
           ]
         ];
+        
+    public $tipe_ujian = [
+      'nama' => 'required|alpha_numeric_space|is_unique[tipe_ujian.nama]'
+      ];
+      
+    public $tipe_ujian_errors = [
+      'nama' => [
+        'required' => 'Tipe ujian wajib diisi',
+        'alpha_numeric_space' => 'Tipe ujian tidak valid',
+        'is_unique' => 'Tipe ujian sudah ada'
+        ]
+      ];
     //--------------------------------------------------------------------
 }
