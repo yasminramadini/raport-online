@@ -22,6 +22,9 @@ class CreateTableSekolah extends Migration
           'alamat' => [
             'type' => 'TEXT'
             ],
+          'logo' => [
+            'type' => 'TEXT'
+            ],
           'created_at' => [
             'type' => 'DATETIME'
             ],

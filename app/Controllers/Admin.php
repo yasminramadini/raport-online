@@ -11,6 +11,8 @@ class Admin extends BaseController
       $this->validation = \Config\Services::validation();
       $this->kelasModel = new \App\Models\KelasModel();
       $this->mapelModel = new \App\Models\MapelModel();
+      $this->sekolahModel = new \App\Models\SekolahModel();
+      helper('filesystem');
     }
     
     public function index()
@@ -93,8 +95,12 @@ class Admin extends BaseController
     
     public function data_sekolah()
     {
+      session();
+      
       $data = [
-        'title' => 'Data Sekolah'
+        'sekolah' => $this->sekolahModel->findAll(),
+        'title' => 'Data Sekolah',
+        'errors' => $this->validation
         ];
         
       return view('admin/sekolah/data_sekolah', $data);
@@ -259,6 +265,51 @@ class Admin extends BaseController
       $this->mapelModel->delete($id);
       session()->setFlashdata('hapus', 'Mata Pelajaran berhasil dihapus');
       return redirect()->to('/admin/mapel');
+    }
+    
+    public function update_sekolah()
+    {
+      $data = [
+        'nama' => $this->request->getPost('nama'),
+        'alamat' => $this->request->getPost('alamat'),
+        'logo' => $this->request->getFile('logo')
+        ];
+        
+      //validasi data 
+      $this->validation->run($data, 'sekolah');
+      $errors = $this->validation->getErrors();
+      
+      //jika ada error
+      if($errors) {
+        return redirect()->back()->withInput();
+      }
+      
+      //ambil file logo 
+      $fileLogo = $this->request->getFile('logo');
+      
+      //jika user mengupload logo
+      if($fileLogo->isValid()) {
+      $namaFile = $fileLogo->getRandomName();
+      //pindahkan logo 
+      $fileLogo->move('logo', $namaFile);
+      //hapus logo lama 
+      unlink('./logo/'.$this->request->getPost('gambarLama'));
+      }
+      //jika user tidak mengupload logo 
+      else {
+        //gunakan gambar lama 
+        $namaFile = $this->request->getPost('gambarLama');
+      }
+      
+      //jika tidak ada error, insert data 
+      $this->sekolahModel->update(1, [
+        'nama' => $this->request->getPost('nama'),
+        'alamat' => $this->request->getPost('alamat'),
+        'logo' => $namaFile
+        ]);
+        
+      session()->setFlashdata('update', 'Data sekolah berhasil diupdate');
+      return redirect()->to('/admin/data_sekolah');
     }
     
 }

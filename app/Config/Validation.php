@@ -72,5 +72,22 @@ class Validation
         'integer' => 'KKM harus angka'
         ]
       ];
+      
+      public $sekolah = [
+        'nama' => 'alpha_numeric_space',
+        'logo' => 'max_size[logo,2048]|max_dims[logo,1000,1000]|mime_in[logo,image/png,image/jpg,image/jpeg]|is_image[logo]'
+        ];
+        
+      public $sekolah_errors = [
+        'nama' => [
+          'alpha_numeric_space' => 'Nama sekolah tidak valid',
+          ],
+        'logo' => [
+          'max_size' => 'Ukuran logo maksimal 2MB',
+          'max_dims' => 'Dimensi logo maksimal 1000px x 1000px',
+          'mime_in' => 'Ekstensi Gambar tidak valid',
+          'is_image' => 'Yang anda upload bukan gambar'
+          ]
+        ];
     //--------------------------------------------------------------------
 }
