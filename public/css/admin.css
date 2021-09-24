@@ -64,12 +64,13 @@ aside a.active {
   }
   
   .nav-btn {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     width: 70px;
-    height: 70px;
+    height: 70px; 
     text-align: center;
-    line-height: 70px;
     border-radius: 50%;
     font-size: 50px;
     top: 150px;

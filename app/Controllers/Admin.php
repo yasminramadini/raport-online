@@ -13,15 +13,50 @@ class Admin extends BaseController
       $this->mapelModel = new \App\Models\MapelModel();
       $this->sekolahModel = new \App\Models\SekolahModel();
       $this->ujianModel = new \App\Models\UjianModel();
+      $this->siswaModel = new \App\Models\SiswaModel();
     }
     
     public function index()
     {
+      if(!$this->request->getGet('page')) {
+        $current_page = 1;
+      }
+      else {
+        $current_page = $this->request->getGet('page');
+      }
+      
       $data = [
-        'title' => 'Data Raport Siswa'
+        'title' => 'Data Raport Siswa',
+        'siswa' => $this->siswaModel->join('kelas', 'kelas.id=siswa.id_kelas')->select('siswa.*')->select('kelas.nama AS kelas')->orderBy('id', 'DESC')->paginate(5),
+        'pager' => $this->siswaModel->pager,
+        'current_page' => $current_page
         ];
         
       return view('admin/siswa/siswa', $data);
+    }
+    
+    public function cari_siswa()
+    {
+      $keyword = $this->request->getPost('keyword');
+      $siswa = $this->siswaModel->cari_siswa($keyword);
+      $kelas = $this->kelasModel->find($siswa->id_kelas);
+      
+      if(!$this->request->getGet('page')) {
+        $current_page = 1;
+      }
+      else {
+        $current_page = $this->request->getGet('page');
+      }
+      
+      $data = [
+        'title' => 'Cari Siswa',
+        'siswa' => $siswa->paginate(10),
+        'kelas' => $kelas,
+        'pager' => $this->siswaModel->pager,
+        'current_page' => $current_page
+        ];
+        
+      return view('admin/siswa/cari_siswa', $data);
     }
     
     public function mapel() 
@@ -45,7 +80,7 @@ class Admin extends BaseController
       
       $data = [
         'title' => 'Mata Pelajaran',
-        'mapel' => $mapel->paginate(5),
+        'mapel' => $mapel->orderBy('id', 'DESC')->paginate(5),
         'pager' => $this->mapelModel->pager,
         'current_page' => $current_page
         ];
@@ -103,7 +138,7 @@ class Admin extends BaseController
       }
       
       $data = [
-        'kelas' => $kelas->paginate(5),
+        'kelas' => $kelas->orderBy('id', 'DESC')->paginate(5),
         'title' => 'Data Kelas',
         'pager' => $this->kelasModel->pager,
         'current_page' => $current_page
@@ -125,10 +160,16 @@ class Admin extends BaseController
       return view('admin/sekolah/data_sekolah', $data);
     }
     
-    public function detail_siswa()
+    public function detail_siswa($id)
     {
+      $siswa = $this->siswaModel->find($id);
+      //ambil nama kelas
+      $kelas = $this->kelasModel->find($siswa['id_kelas']);
+      
       $data = [
-        'title' => 'Detail Siswa'
+        'title' => 'Detail Siswa',
+        'siswa' => $siswa,
+        'kelas' => $kelas
         ];
         
       return view('admin/siswa/detail_siswa', $data);
@@ -405,5 +446,105 @@ class Admin extends BaseController
       session()->setFlashdata('hapus', 'Tipe ujian berhasil dihapus');
       return redirect()->to('/admin/tipe_ujian');
     }
+    
+  public function tambah_siswa()
+  {
+    session();
+    
+    $data = [
+      'title' => 'Tambah Siswa',
+      'errors' => $this->validation,
+      'daftarKelas' => $this->kelasModel->orderBy('nama', 'ASC')->findAll()
+      ];
+      
+    return view('admin/siswa/tambah_siswa', $data);
+  }
+  
+  public function store_siswa()
+  {
+    $data = [
+      'nama' => $this->request->getPost('nama'),
+      'kelas' => $this->request->getPost('kelas'),
+      'nis' => $this->request->getPost('nis')
+      ];
+      
+    //ambil id kelas 
+    $id_kelas = $this->kelasModel->where('nama', $data['kelas'])->first();
+    
+    //validasi data 
+    $this->validation->run($data, 'siswa');
+    $errors = $this->validation->getErrors();
+    
+    //jika ada error 
+    if($errors) {
+      return redirect()->back()->withInput();
+    }
+    
+    //jika tidak ada error, insert data 
+    $this->siswaModel->save([
+      'nama' => $this->request->getPost('nama'),
+      'id_kelas' => $id_kelas['id'],
+      'nis' => $this->request->getPost('nis')
+      ]);
+    session()->setFlashdata('tambah', 'Siswa berhasil ditambahkan');
+    return redirect()->to('/admin');
+  }
+  
+  public function edit_siswa($id)
+  {
+    session();
+    
+    $siswa = $this->siswaModel->find($id);
+    //ambil nama kelas 
+    $kelas = $this->kelasModel->find($siswa['id_kelas']);
+    
+    $data = [
+      'title' => 'Edit Siswa',
+      'siswa' => $siswa,
+      'kelas' => $kelas,
+      'daftarKelas' => $this->kelasModel->orderBy('nama', 'ASC')->findAll(),
+      'errors' => $this->validation
+      ];
+      
+    return view('admin/siswa/edit_siswa', $data);
+  }
+  
+  public function update_siswa()
+  {
+    $data = [
+      'nama' => $this->request->getPost('nama'),
+      'kelas' => $this->request->getPost('kelas'),
+      'nis' => $this->request->getPost('nis')
+      ];
+      
+    //validasi data 
+    $this->validation->run($data, 'update_siswa');
+    $errors = $this->validation->getErrors();
+    
+    //jika ada errors
+    if($errors) {
+      return redirect()->back()->withInput();
+    }
+    
+    //jika tidak ada error, update data 
+    //ambil id kelas 
+    $id_kelas = $this->kelasModel->where('nama', $data['kelas'])->first();
+    
+    $this->siswaModel->update($this->request->getPost('id'), [
+      'nama' => $data['nama'],
+      'id_kelas' => $id_kelas['id'],
+      'nis' => $data['nis']
+      ]);
+    session()->setFlashdata('update', 'Siswa berhasil diupdate');
+    return redirect()->to('/admin/detail_siswa/'.$this->request->getPost('id'));
+  }
+  
+  public function hapus_siswa()
+  {
+    $id = $this->request->getPost('id');
+    $this->siswaModel->delete($id);
+    session()->setFlashdata('hapus', 'Siswa berhasil dihapus');
+    return redirect()->to('/admin'); 
+  }
     
 }

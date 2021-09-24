@@ -20,19 +20,9 @@
   
   <div class="row mt-5">
     <div class="col-lg-6">
-      <a href="<?= base_url('admin/tambah_siswa') ?>" class="btn btn-primary mb-3">Tambah Siswa</a>
-      
-      <form method="post" action="/admin/cari_siswa">
-        <div class="input-group">
-          <input type="search" name="keyword" class="form-control" placeholder="Cari nama siswa..." autocomplete="off">
-          <button class="btn btn-success" name="cari">Cari</button>
-        </div>
-      </form>
-      
-      <?php if(isset($_POST['cari'])) { ?>
+
       <p><?= count($siswa) ?> hasil pencarian untuk <b><?= $_POST['keyword'] ?></b></p>
       <a style="text-decoration: none;" href="<?= base_url('admin') ?>">Tampilkan semua</a>
-      <?php } ?>
       
       <div style="overflow-x: auto">
         <table class="table table-bordered table-striped mt-3">
@@ -52,7 +42,9 @@
               <td><?= $i++ ?></td>
               <td><?= $s['nama'] ?></td>
               <td><?= $s['nis'] ?></td>
-              <td><?= $s['kelas'] ?></td>
+              <td><?php foreach($kelas as $k) {
+              if($k['id'] === $s['id_kelas']) { echo $k['nama']; }
+              }?></td>
               <td>
                 <a href="<?= base_url('admin/detail_siswa/'.$s['id']) ?>" class="btn btn-success"><i class="bi bi-eye"></i></a>
               </td>

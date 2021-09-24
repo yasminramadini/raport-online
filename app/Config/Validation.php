@@ -101,5 +101,44 @@ class Validation
         'is_unique' => 'Tipe ujian sudah ada'
         ]
       ];
+      
+    public $siswa = [
+      'nama' => 'required|alpha_numeric_space',
+      'kelas' => 'required',
+      'nis' => 'required|is_unique[siswa.nis]'
+      ];
+      
+    public $siswa_errors = [
+      'nama' => [
+        'required' => 'Nama siswa wajib diisi',
+        'alpha_numeric_space' => 'Nama siswa tidak valid'
+        ],
+      'kelas' => [
+        'required' => 'Kelas wajib diisi'
+        ],
+      'nis' => [
+        'required' => 'NIS wajib diisi',
+        'is_unique' => 'NIS sudah dipakai'
+        ]
+      ];
+      
+    public $update_siswa = [
+      'nama' => 'required|alpha_numeric_space',
+      'kelas' => 'required',
+      'nis' => 'required'
+      ];
+      
+    public $update_siswa_errors = [
+      'nama' => [
+        'required' => 'Nama siswa wajib diisi',
+        'alpha_numeric_space' => 'Nama siswa tidak valid'
+        ],
+      'kelas' => [
+        'required' => 'Kelas wajib diisi'
+        ],
+      'nis' => [
+        'required' => 'NIS wajib diisi',
+        ]
+      ];
     //--------------------------------------------------------------------
 }
