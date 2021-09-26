@@ -34,7 +34,7 @@
   </head>
   <body>
     <!-- navbar -->
-    <nav class="navbar navbar-light bg-info">
+    <nav class="navbar navbar-light bg-info position-fixed">
       <div class="container">
         <span class="d-flex align-items-center"><img class="navbar-brand mb-0 h1" src="<?= base_url('logo.png') ?>" width="50px"><strong class="fs-3">SMK Informatika</strong></span>
       </div>

@@ -14,6 +14,8 @@ class Admin extends BaseController
       $this->sekolahModel = new \App\Models\SekolahModel();
       $this->ujianModel = new \App\Models\UjianModel();
       $this->siswaModel = new \App\Models\SiswaModel();
+      $this->nilaiModel = new \App\Models\NilaiModel();
+      $this->raportModel = new \App\Models\RaportModel();
     }
     
     public function index()
@@ -165,11 +167,13 @@ class Admin extends BaseController
       $siswa = $this->siswaModel->find($id);
       //ambil nama kelas
       $kelas = $this->kelasModel->find($siswa['id_kelas']);
+      $raport = $this->raportModel->join('tipe_ujian', 'raport.id_ujian=tipe_ujian.id')->select('tipe_ujian.nama as ujian')->select('raport.*')->where('id_siswa', $id)->orderBy('raport.id', 'DESC')->findAll();
       
       $data = [
         'title' => 'Detail Siswa',
         'siswa' => $siswa,
-        'kelas' => $kelas
+        'kelas' => $kelas,
+        'raport' => $raport
         ];
         
       return view('admin/siswa/detail_siswa', $data);
@@ -545,6 +549,116 @@ class Admin extends BaseController
     $this->siswaModel->delete($id);
     session()->setFlashdata('hapus', 'Siswa berhasil dihapus');
     return redirect()->to('/admin'); 
+  }
+  
+  public function tambah_raport($id)
+  {
+    session();
+    
+    $siswa = $this->siswaModel->find($id);
+    
+    $data = [
+      'title' => 'Tambah Raport',
+      'siswa' => $siswa,
+      'errors' => $this->validation,
+      'ujian' => $this->ujianModel->findAll(),
+      'kelas' => $this->kelasModel->find($siswa['id_kelas']),
+      'mapel' => $this->mapelModel->findAll()
+      ];
+      
+    return view('admin/raport/tambah_raport', $data);
+  }
+  
+  public function store_raport()
+  {
+    //validasi data 
+    $this->validation->run($this->request->getPost(), 'raport');
+    $errors = $this->validation->getErrors();
+    
+    //jika ada error
+    if($errors) {
+      return redirect()->back()->withInput();
+    }
+    
+    //ambil id siswa 
+    $idSiswa = $this->siswaModel->where('nama', $this->request->getPost('nama'))->first();
+    $idSiswa = $idSiswa['id'];
+  
+  //ambil id tipe ujian 
+  $idTipeUjian = $this->ujianModel->where('nama', $this->request->getPost('tipe_ujian'))->first();
+  $idTipeUjian = $idTipeUjian['id'];
+  
+  $namaFileRaport = date('Y-m-d') . '_' . $this->request->getPost('nama') . '_' . $this->request->getPost('tipe_ujian');
+  
+  //insert data ke table raport 
+  $dataRaport = [
+    'id_siswa' => $idSiswa,
+    'id_ujian' => $idTipeUjian,
+    'nama_file' => $namaFileRaport,
+    'thn_pelajaran' => $this->request->getPost('thn_pelajaran'),
+    'sakit' => $this->request->getPost('sakit'),
+    'izin' => $this->request->getPost('izin'),
+    'alfa' => $this->request->getPost('alfa'),
+    'catatan' => $this->request->getPost('catatan')
+    ];
+    $simpanDataRaport = $this->raportModel->insertData($dataRaport);
+    
+    //ambil id mapel
+    $mapel = $this->request->getPost('mapel');
+    
+    foreach ($mapel as $key => $val) {
+      $cariIdMapel = $this->mapelModel->where('nama', $key)->findAll();
+      foreach ($cariIdMapel as $idMapel) {
+        //insert ke table nilai
+        $this->nilaiModel->insert([
+          'id_raport' => $simpanDataRaport,
+          'id_mapel' => $idMapel['id'],
+          'nilai' => $val
+          ]);
+      }
+    }
+    
+    return redirect()->to('/admin/detail_siswa/'.$this->request->getPost('id'))->with('tambahRaport', 'Raport berhasil ditambahkan');
+    
+  }
+  
+  public function hapus_raport()
+  {
+    $id = $this->request->getPost('idRaport');
+    
+    //ambil nilai raport 
+    $raport = $this->raportModel->find($id);
+    
+    //hapus nilai
+    $sql = "DELETE FROM nilai WHERE id_raport = ?";
+    $this->nilaiModel->query($sql, [$raport['id'] ]);
+    
+    //hapus raport
+    $this->raportModel->delete($id);
+    
+    session()->setFlashdata('hapusRaport', 'Raport berhasil dihapus');
+    return redirect()->to('/admin/detail_siswa/'.$this->request->getPost('idSiswa'));
+  }
+  
+  public function lihat_raport($id)
+  {
+    $raport = $this->raportModel->find($id);
+    $siswa = $this->siswaModel->find($raport['id_siswa']);
+    $tipe_ujian = $this->ujianModel->find($raport['id_ujian']);
+    $kelas = $this->kelasModel->find($siswa['id_kelas']);
+    $nilai = $this->nilaiModel->join('mapel', 'nilai.id_mapel=mapel.id')->select('mapel.nama')->select('mapel.kkm')->select('nilai.*')->where('id_raport', $raport['id'])->findAll();
+    
+    $data = [
+      'title' => 'Detail Raport',
+      'raport' => $raport,
+      'kelas' => $kelas,
+      'siswa' => $siswa,
+      'tipe_ujian' => $tipe_ujian,
+      'nilai' => $nilai,
+      'sekolah' => $this->sekolahModel->findAll()
+      ];
+      
+    return view('admin/raport/lihat_raport', $data);
   }
     
 }

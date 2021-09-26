@@ -140,5 +140,28 @@ class Validation
         'required' => 'NIS wajib diisi',
         ]
       ];
+      
+    public $raport = [
+      'thn_pelajaran' => 'required|alpha_numeric_punct',
+      'sakit' => 'integer',
+      'izin' => 'integer',
+      'alfa' => 'integer'
+      ];
+      
+    public $raport_errors = [
+      'thn_pelajaran' => [
+        'required' => 'tahun pelajaran wajib diisi',
+        'alpha_numeric_punct' => 'tahun pelajaran tidak valid'
+        ],
+      'sakit' => [
+        'integer' => 'jumlah sakit harus angka',
+        ],
+      'izin' => [
+        'integer' => 'jumlah izin harus angka'
+        ],
+      'alfa' => [
+        'integer' => 'jumlah alfa harus angka'
+        ]
+      ];
     //--------------------------------------------------------------------
 }

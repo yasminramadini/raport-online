@@ -31,6 +31,25 @@ class CreateRaport extends Migration
             'type' => 'VARCHAR',
             'constraint' => 20
             ],
+          'sakit' => [
+            'type' => 'INT',
+            'constraint' => 3,
+            'null' => true
+            ],
+          'izin' => [
+            'type' => 'INT',
+            'constraint' => 3,
+            'null' => true
+            ],
+          'alfa' => [
+            'type' => 'INT',
+            'constraint' => 3,
+            'null' => true
+            ],
+          'catatan' => [
+            'type' => 'TEXT',
+            'null' => true
+          ],
           'created_at' => [
             'type' => 'DATETIME'
             ],
