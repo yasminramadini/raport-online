@@ -9,7 +9,8 @@
       <h2 class="display-3">Selamat Datang!</h2>
       <p>Silahkan tulis NIS anda untuk mencari raport</p>
     </div>
-    <form action="" method="post">
+    <form action="/siswa/cari_raport" method="post">
+      <?= csrf_field() ?>
       <div class="input-group" id="myForm">
         <input type="number" name="keyword" class="form-control" id="keyword" placeholder="Masukkan NIS" required>
         <button id="submit" type="submit" class="btn btn-success">Cari</button>

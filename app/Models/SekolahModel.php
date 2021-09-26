@@ -8,7 +8,7 @@ class SekolahModel extends Model
 {
     protected $table = 'sekolah';
     protected $returnType = 'array';
-    protected $allowedFields = ['nama', 'alamat', 'logo'];
+    protected $allowedFields = ['nama', 'kepsek', 'alamat', 'logo'];
 
     // Dates
     protected $useTimestamps = true;

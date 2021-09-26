@@ -1,3 +1,5 @@
+<?php setlocale(LC_ALL, 'id_ID.utf8'); ?>
+
 <html>
   <head>
     <title>Detail Raport</title>
@@ -10,20 +12,14 @@
       .container {
         margin: 0 auto;
         padding: 50px;
-        width: 800px;
+        width: 600px;
         margin: 0 auto;
       }
       header {
         text-align: center;
       }
-      img {
-        position: absolute;
-        top: 60px;
-        left: 80px;
-        z-index: 10;
-      }
       .biodata {
-        margin-top: 50px;
+        margin-top: 30px;
       }
       .left {
         float: left;
@@ -40,36 +36,36 @@
       #daftarNilai{
         width: 100%;
         border-collapse: collapse;
+        margin-top: 40px;
       }
       #absent {
         width: 80%;
         border-collapse: collapse;
       }
       #daftarNilai td, #daftarNilai th, #absent td, #absent th {
-        padding: 8px;
+        padding: 8px 30px;
       }
       #absent {
         margin-top: 40px;
       }
       #detail {
-        margin-top: 40px;
+        margin-top: 60px;
       }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h4><b>Laporan Hasil <?= $tipe_ujian['nama'] ?></b></h4>
-        <img src="/logo/<?= $sekolah[0]['logo'] ?>" width="70px">
+        <h4 style="margin-bottom: 5px"><b>Laporan Hasil <?= $tipe_ujian['nama'] ?></b></h4>
         <h2><?= $sekolah[0]['nama'] ?></h2>
-        <p><?= $sekolah[0]['alamat'] ?></p>
+        <p style="margin-top: 5px"><?= $sekolah[0]['alamat'] ?></p>
       </header>
       <section class="biodata">
         <div class="left">
           <table>
             <tr>
               <td>Nama siswa:</td>
-              <td><?= $siswa['nama'] ?></td>
+              <td><p style="margin-left: 5px;"><?= $siswa['nama'] ?></p></td>
             </tr>
             <tr>
               <td>No. induk:</td>
@@ -101,7 +97,7 @@
           <?php $i = 1 ?>
           <?php foreach($nilai as $n) { ?>
           <tr>
-            <td><?= $i++ ?></td>
+            <td style="text-align: center"><?= $i++ ?></td>
             <td><?= $n['nama'] ?></td>
             <td style="text-align: center;"><?= $n['kkm'] ?></td>
             <td style="text-align: center;"><?= $n['nilai'] ?></td>
@@ -162,19 +158,21 @@
         
       </section>
       
+      <?php
+      $hari = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wenesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'];
+      $namaHari = $hari[date('l', strtotime($raport['created_at']))];
+      ?>
+      <p style="margin-top: 30px;"><?= $namaHari . ', ' . date('d F Y', strtotime($raport['created_at'])) ?></p>
       <section id="detail">
         <div class="left">
           <p>Wali Kelas</p>
-          <p style="margin-top: 25px; text-align: center">....</p>
         </div>
         <div class="right">
           <p>Kepala Sekolah</p>
-          <p style="margin-top: 25px; text-align: center">....</p>
+          <p style="margin-top: 35px;"><?= $sekolah[0]['kepsek'] ?></p>
         </div>
       </section>
       <div class="clear"></div>
-      <p style="text-align: center; margin-top: 30px">Orang Tua</p>
-      <p style="margin-top: 25px; text-align: center;">....</p>
     </div>
   </body>
 </html>

@@ -73,6 +73,11 @@
           </div>
         </div>
         <?php } ?>
+        <?php if(count($raport) === 0) { ?>
+        <div class="alert alert-warning">
+          Tidak ada raport
+        </div>
+        <?php } ?>
       </div>
       
 </section>

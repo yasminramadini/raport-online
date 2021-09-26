@@ -75,12 +75,16 @@ class Validation
       
       public $sekolah = [
         'nama' => 'alpha_numeric_space',
+        'kepsek' => 'alpha_numeric_space',
         'logo' => 'max_size[logo,2048]|max_dims[logo,1000,1000]|mime_in[logo,image/png,image/jpg,image/jpeg]|is_image[logo]'
         ];
         
       public $sekolah_errors = [
         'nama' => [
           'alpha_numeric_space' => 'Nama sekolah tidak valid',
+          ],
+        'kepsek' => [
+          'alpha_numeric_space' => 'nama kepala sekolah tidak valid'
           ],
         'logo' => [
           'max_size' => 'Ukuran logo maksimal 2MB',

@@ -335,6 +335,7 @@ class Admin extends BaseController
     {
       $data = [
         'nama' => $this->request->getPost('nama'),
+        'kepsek' => $this->request->getPost('kepsek'),
         'alamat' => $this->request->getPost('alamat'),
         'logo' => $this->request->getFile('logo')
         ];
@@ -368,6 +369,7 @@ class Admin extends BaseController
       //jika tidak ada error, insert data 
       $this->sekolahModel->update(1, [
         'nama' => $this->request->getPost('nama'),
+        'kepsek' => $this->request->getPost('kepsek'),
         'alamat' => $this->request->getPost('alamat'),
         'logo' => $namaFile
         ]);
@@ -562,7 +564,7 @@ class Admin extends BaseController
       'siswa' => $siswa,
       'errors' => $this->validation,
       'ujian' => $this->ujianModel->findAll(),
-      'kelas' => $this->kelasModel->find($siswa['id_kelas']),
+      'kelas' => $this->kelasModel->find($siswa['id']),
       'mapel' => $this->mapelModel->findAll()
       ];
       
@@ -640,7 +642,7 @@ class Admin extends BaseController
     return redirect()->to('/admin/detail_siswa/'.$this->request->getPost('idSiswa'));
   }
   
-  public function lihat_raport($id)
+  public function lihat_raport($id, $download = false)
   {
     $raport = $this->raportModel->find($id);
     $siswa = $this->siswaModel->find($raport['id_siswa']);
@@ -657,6 +659,16 @@ class Admin extends BaseController
       'nilai' => $nilai,
       'sekolah' => $this->sekolahModel->findAll()
       ];
+      
+    if($download === 'download') {
+      $namaFileRaport = $raport['nama_file'];
+      $dompdf = new \Dompdf\Dompdf();
+      $dompdf->loadHtml(view('admin/raport/lihat_raport', $data));
+      $dompdf->setPaper('A4', 'portrait');
+      $dompdf->render();
+      $dompdf->stream($namaFileRaport);
+      return redirect()->to('/');
+    }
       
     return view('admin/raport/lihat_raport', $data);
   }
