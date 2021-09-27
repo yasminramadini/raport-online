@@ -2,14 +2,13 @@
 
 <?= $this->section('content') ?>
 
-<div class="container">
-<div class="wrapper">
+<div class="container mt-5">
   <p><b><?= count($raport) ?></b> raport <b><?= $siswa ?></b></p>
   <div class="row">
     
   <?php foreach ($raport as $r) { ?>
   <div class="col-md-6 col-lg-4">
-    <div class="card mt-3 me-3">
+    <div class="card mt-3 me-3" style="width: 100%;">
       <p class="card-title p-2 my-0"><b>Raport <?= $r['ujian']?></b></p>
       <p class="p-2 my-0">TP <?= $r['thn_pelajaran'] ?></p>
       <div class="card-footer">
@@ -20,7 +19,6 @@
   <?php } ?>
   
   </div>
-</div>
 </div>
 
 <?= $this->endSection() ?>

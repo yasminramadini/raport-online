@@ -167,5 +167,49 @@ class Validation
         'integer' => 'jumlah alfa harus angka'
         ]
       ];
+      
+    public $login = [
+      'username' => 'required',
+      'password' => 'required',
+      ];
+      
+    public $login_errors = [
+      'username' => [
+        'required' => 'username wajib'
+        ],
+      'password' => [
+        'required' => 'password wajib diisi'
+        ],
+      ];
+      
+    public $register = [
+      'username' => 'required|alpha|is_unique[user.username]|max_length[10]|min_length[3]',
+      'password' => 'required|min_length[8]',
+      'confirmPassword' => 'required|matches[password]',
+      'email' => 'required|valid_emails|is_unique[user.email]'
+      ];
+      
+    public $register_errors = [
+      'username' => [
+        'required' => 'username wajib diisi',
+        'alpha' => 'username hanya boleh huruf tanpa spasi',
+        'is_unique' => 'username sudah dipakai',
+        'max_length' => 'username maksimal 10 huruf',
+        'min_length' => 'username minimal 3 huruf'
+        ],
+      'password' => [
+        'required' => 'password wajib diisi',
+        'min_length' => 'password minimal 8 karakter'
+        ],
+      'confirmPassword' => [
+        'required' => 'konfirmasi password wajib diisi',
+        'matches' => 'konfirmasi password tidak sama'
+        ],
+      'email' => [
+        'required' => 'email wajib diisi',
+        'valid_emails' => 'email tidak valid',
+        'is_unique' => 'email sudah dipakai'
+        ]
+      ];
     //--------------------------------------------------------------------
 }

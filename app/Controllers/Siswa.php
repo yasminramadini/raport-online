@@ -13,7 +13,8 @@ class Siswa extends BaseController
     }
     public function index()
     {
-        return view('siswa/index');
+      $data = ['title' => 'Website Raport Online'];
+        return view('siswa/index', $data);
     }
     
     public function cari_raport()

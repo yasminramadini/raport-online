@@ -16,10 +16,13 @@ class Admin extends BaseController
       $this->siswaModel = new \App\Models\SiswaModel();
       $this->nilaiModel = new \App\Models\NilaiModel();
       $this->raportModel = new \App\Models\RaportModel();
+      session();
     }
     
     public function index()
     {
+      session();
+      
       if(!$this->request->getGet('page')) {
         $current_page = 1;
       }
@@ -39,6 +42,8 @@ class Admin extends BaseController
     
     public function cari_siswa()
     {
+      session();
+      
       $keyword = $this->request->getPost('keyword');
       $siswa = $this->siswaModel->cari_siswa($keyword);
       $kelas = $this->kelasModel->find($siswa->id_kelas);
