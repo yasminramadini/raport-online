@@ -36,7 +36,13 @@ $routes->get('/login', 'Auth::index');
 $routes->get('/register', 'Auth::register');
 $routes->post('/store_register', 'Auth::store_register');
 $routes->post('/store_login', 'Auth::store_login');
-  $routes->get('/logout', 'Auth::logout');
+$routes->get('/logout', 'Auth::logout');
+$routes->get('/lupa_password', 'Auth::lupa_password');
+$routes->post('/cek_email', 'Auth::cek_email');
+$routes->get('/masukkan_otp', 'Auth::masukkan_otp');
+$routes->post('/proses_otp', 'Auth::proses_otp');
+$routes->get('/ubah_password', 'Auth::ubah_password');
+$routes->post('/simpan_password', 'Auth::simpan_password');
 
 $routes->group('admin', function($routes) {
   $routes->get('/', 'Admin::index', ['filter' => 'login']);

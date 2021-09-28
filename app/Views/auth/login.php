@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <div class="container">
-  <div class="wrapper" style="background: #f5f5f5">
+  <div class="wrapper" style="background: #f5f5f5; padding-top: 80px">
     
     <?php if(session()->getFlashdata('register')) { ?>
     <div class="alert alert-success my-3">
@@ -17,6 +17,11 @@
     </div>
     <?php } ?>
     
+    <?php if(session()->getFlashdata('updatePassword')) { ?>
+    <div class="alert alert-info my-3">
+      <?= session()->getFlashdata('updatePassword') ?>
+    </div>
+    <?php } ?>
     
     <?php if(session()->getFlashdata('usernameSalah')) { ?>
     <div class="alert alert-danger my-3">
@@ -45,7 +50,8 @@
         <div class="mb-4 d-grid">
           <button type="submit" class="btn btn-success d-block">Login</button>
         </div>
-        <a style="none; color: #777;" class="text-center nav-link" href="<?= base_url('register') ?>">Belum punya akun?</a>
+        <a style="color: #777;" class="text-center nav-link" href="<?= base_url('register') ?>">Belum punya akun?</a>
+        <a style="color: #777;" class="text-center nav-link" href="<?= base_url('lupa_password') ?>">Lupa Password?</a> 
       </form>
     </div>
   </div>

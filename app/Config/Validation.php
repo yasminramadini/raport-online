@@ -211,5 +211,20 @@ class Validation
         'is_unique' => 'email sudah dipakai'
         ]
       ];
+      
+    public $ubah_password = [
+      'password' => 'required|min_length[8]',
+      'confirmPassword' => 'matches[password]'
+      ];
+      
+    public $ubah_password_errors = [
+      'confirmPassword' => [
+        'matches' => 'konfirmasi password tidak sama',
+        ],
+      'password' => [
+        'min_length' => 'password minimal 8 karakter',
+        'required' => 'password wajib diisi'
+        ]
+      ];
     //--------------------------------------------------------------------
 }

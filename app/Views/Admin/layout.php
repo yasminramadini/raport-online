@@ -34,7 +34,7 @@
   </head>
   <body>
     <!-- navbar -->
-    <nav class="navbar navbar-light bg-info position-fixed">
+    <nav class="navbar navbar-light bg-info">
       <div class="container">
         <span class="d-flex align-items-center"><img class="navbar-brand mb-0 h1" src="<?= base_url('logo.png') ?>" width="50px"><strong class="fs-3">SMK Informatika</strong></span>
       </div>
@@ -45,7 +45,7 @@
         <aside class="bg-dark text-white p-3" id="sidebar">
           <div class="profil my-4 text-center">
             <img src="<?= base_url('user.png') ?>" width="100px" class="d-block mx-auto">
-            <p class="fs-4 mb-0 pb-0"><strong>John Doe</strong></p>
+            <p class="fs-4 mb-0 pb-0"><strong><?= session()->get('username') ?></strong></p>
             <span class="text-muted">Administrator</span>
           </div>
           <hr>
