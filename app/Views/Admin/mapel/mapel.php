@@ -38,6 +38,10 @@
       <p class="mt-3"><a href="<?= base_url('admin/mapel') ?>" style="text-decoration: none;">Tampilkan semua</a></p>
       <?php } ?>
       
+      <?php if(session()->getFlashdata('dontDelete')) { ?>
+      <script>alert('Mapel tidak bisa dihapus karena sudah memiliki beberapa nilai')</script>
+      <?php } ?>
+      
       <a href="<?= base_url('admin/tambah_mapel') ?>" class="btn btn-primary mt-3">Tambah Mapel</a>
       
       <div style="overflow-x: auto">

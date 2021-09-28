@@ -29,8 +29,6 @@ class Auth extends BaseController
     
     public function index()
     {
-        session();
-        
         if(session()->get('isLogin') === 'true') {
           return redirect()->to('/admin');
         }
@@ -46,8 +44,6 @@ class Auth extends BaseController
     
     public function register()
     {
-      session();
-      
       if(session()->get('isLogin') === 'true') {
         return redirect()->to('/admin');
       }
@@ -63,8 +59,6 @@ class Auth extends BaseController
     
     public function store_register()
     {
-      session();
-      
       //validasi data 
       $this->validation->run($this->request->getPost(), 'register');
       $errors = $this->validation->getErrors();
@@ -81,7 +75,8 @@ class Auth extends BaseController
       $data = [
         'username' => $this->request->getPost('username'),
         'password' => $hashPassword,
-        'role' => 1
+        'role' => 1,
+        'email' => $this->request->getPost('email')
         ];
       
       //insert data 
@@ -92,8 +87,6 @@ class Auth extends BaseController
     
     public function store_login()
     {
-      session();
-      
       //validasi data 
       $this->validation->run($this->request->getPost(), 'login');
       

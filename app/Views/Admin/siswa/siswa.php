@@ -30,7 +30,7 @@
       </form>
       
       <?php if(isset($_POST['cari'])) { ?>
-      <p><?= count($siswa) ?> hasil pencarian untuk <b><?= $_POST['keyword'] ?></b></p>
+      <p><?= count($siswa) ?> hasil pencarian untuk <b><?= esc($_POST['keyword']) ?></b></p>
       <a style="text-decoration: none;" href="<?= base_url('admin') ?>">Tampilkan semua</a>
       <?php } ?>
       
@@ -50,9 +50,9 @@
             <?php foreach ($siswa as $s) { ?>
             <tr>
               <td><?= $i++ ?></td>
-              <td><?= $s['nama'] ?></td>
-              <td><?= $s['nis'] ?></td>
-              <td><?= $s['kelas'] ?></td>
+              <td><?= esc($s['nama']) ?></td>
+              <td><?= esc($s['nis']) ?></td>
+              <td><?= esc($s['kelas']) ?></td>
               <td>
                 <a href="<?= base_url('admin/detail_siswa/'.$s['id']) ?>" class="btn btn-success"><i class="bi bi-eye"></i></a>
               </td>

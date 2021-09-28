@@ -29,19 +29,19 @@
         <input type="hidden" name="id" value="<?= $siswa['id'] ?>">
         <div class="mb-3">
           <label for="nama">Nama Siswa</label>
-          <input type="text" value="<?= $siswa['nama'] ?>" disabled id="nama" class="form-control">
+          <input type="text" value="<?= esc($siswa['nama']) ?>" disabled id="nama" class="form-control">
         </div>
         <div class="mb-3">
           <label for="kelas">Kelas</label>
-          <input type="text" id="kelas" disabled class="form-control" value="<?= $kelas['nama'] ?>">
+          <input type="text" id="kelas" disabled class="form-control" value="<?= esc($kelas['nama']) ?>">
         </div>
         <div class="mb-3">
           <label for="nis">Nomor Induk Siswa (NIS)</label>
-          <input type="number" id="nis" class="form-control" value="<?= $siswa['nis'] ?>" disabled>
+          <input type="number" id="nis" class="form-control" value="<?= esc($siswa['nis']) ?>" disabled>
         </div>
         <div class="mb-3">
-          <p>Ditambahkan pada: <?= $siswa['created_at'] ?></p>
-          <p>Terakhir diupdate: <?= $siswa['updated_at'] ?></p>
+          <p>Ditambahkan pada: <?= esc($siswa['created_at']) ?></p>
+          <p>Terakhir diupdate: <?= esc($siswa['updated_at']) ?></p>
         </div>
         <a class="btn btn-warning d-inline-block" href="<?= base_url('admin/edit_siswa/'.$siswa['id']) ?>">Edit Siswa</a>
         <form method="post" action="/admin/hapus_siswa" class="d-inline-block">
@@ -59,8 +59,8 @@
         <div class="col-lg-4 col-md-6">
           <div class="card mt-3 me-3">
             <div class="card-body">
-              <p class="card-title"><b>Raport <?= $r['ujian'] . ' ' . $r['thn_pelajaran'] ?></b></p>
-              <p class="card-text">Created at: <?= $r['created_at'] ?></p>
+              <p class="card-title"><b>Raport <?= esc($r['ujian']) . ' ' . esc($r['thn_pelajaran']) ?></b></p>
+              <p class="card-text">Created at: <?= esc($r['created_at']) ?></p>
             </div>
             <div class="card-footer d-flex justify-content-between">
               <a href="<?= base_url('admin/lihat_raport/'.$r['id']) ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>

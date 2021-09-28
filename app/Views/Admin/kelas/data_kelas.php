@@ -23,6 +23,10 @@
       <div class="alert alert-success mt-3"><?= session()->getFlashdata('hapus') ?></div>
       <?php } ?>
       
+      <?php if(session()->getFlashdata('dontDelete')) { ?>
+      <script>alert('Kelas tidak bisa dihapus karena sudah memiliki siswa')</script>
+      <?php } ?>
+      
       <a href="<?= base_url('admin/create_kelas') ?>" class="my-3 btn btn-primary">Tambah Kelas</a>
 
       <form method="post" action="/admin/data_kelas">
@@ -34,7 +38,7 @@
       
       <?php 
       //penomoran
-      $i = ($current_page * 5) - (5 - 1);
+      $i = ($current_page * 10) - (10 - 1);
       ?>
       
       <?php if(isset($_POST['cari'])) { ?>

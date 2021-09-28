@@ -56,30 +56,30 @@
   <body>
     <div class="container">
       <header>
-        <h4 style="margin-bottom: 5px"><b>Laporan Hasil <?= $tipe_ujian['nama'] ?></b></h4>
-        <h2><?= $sekolah[0]['nama'] ?></h2>
-        <p style="margin-top: 5px"><?= $sekolah[0]['alamat'] ?></p>
+        <h4 style="margin-bottom: 5px"><b>Laporan Hasil <?= esc($tipe_ujian['nama']) ?></b></h4>
+        <h2><?= esc($sekolah[0]['nama']) ?></h2>
+        <p style="margin-top: 5px"><?= esc($sekolah[0]['alamat']) ?></p>
       </header>
       <section class="biodata">
         <div class="left">
           <table>
             <tr>
               <td>Nama siswa:</td>
-              <td><p style="margin-left: 5px;"><?= $siswa['nama'] ?></p></td>
+              <td><p style="margin-left: 5px;"><?= esc($siswa['nama']) ?></p></td>
             </tr>
             <tr>
               <td>No. induk:</td>
-              <td><?= $siswa['nis'] ?></td>
+              <td><?= esc($siswa['nis']) ?></td>
             </tr>
           </table>
         </div>
         <div class="right">
           <table>
             <tr>
-              <td>Tahun pelajaran: <?= $raport['thn_pelajaran'] ?></td>
+              <td>Tahun pelajaran: <?= esc($raport['thn_pelajaran']) ?></td>
             </tr>
             <tr>
-              <td>Kelas: <?= $kelas['nama'] ?></td>
+              <td>Kelas: <?= esc($kelas['nama']) ?></td>
             </tr>
           </table>
         </div>
@@ -98,9 +98,9 @@
           <?php foreach($nilai as $n) { ?>
           <tr>
             <td style="text-align: center"><?= $i++ ?></td>
-            <td><?= $n['nama'] ?></td>
-            <td style="text-align: center;"><?= $n['kkm'] ?></td>
-            <td style="text-align: center;"><?= $n['nilai'] ?></td>
+            <td><?= esc($n['nama']) ?></td>
+            <td style="text-align: center;"><?= esc($n['kkm']) ?></td>
+            <td style="text-align: center;"><?= esc($n['nilai']) ?></td>
             <td style="text-align: center;">
               <?php
                 if($n['nilai'] >= 90) {
@@ -136,17 +136,17 @@
           <tr>
             <td style="text-align: center">1</td>
             <td>Sakit</td>
-            <td style="text-align: center;"><?= $raport['sakit'] ?></td>
+            <td style="text-align: center;"><?= esc($raport['sakit']) ?></td>
           </tr>
           <tr>
             <td style="text-align: center;">2</td>
             <td>Izin</td>
-            <td style="text-align: center;"><?= $raport['izin'] ?></td>
+            <td style="text-align: center;"><?= esc($raport['izin']) ?></td>
           </tr>
           <tr>
             <td style="text-align: center;">3</td>
             <td>Tanpa Keterangan</td>
-            <td style="text-align: center;"><?= $raport['alfa'] ?></td>
+            <td style="text-align: center;"><?= esc($raport['alfa']) ?></td>
           </tr>
         </table>
         
@@ -169,7 +169,7 @@
         </div>
         <div class="right">
           <p>Kepala Sekolah</p>
-          <p style="margin-top: 35px;"><?= $sekolah[0]['kepsek'] ?></p>
+          <p style="margin-top: 35px;"><?= esc($sekolah[0]['kepsek']) ?></p>
         </div>
       </section>
       <div class="clear"></div>

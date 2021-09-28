@@ -8,6 +8,12 @@
   <div class="row mt-5">
     <div class="col-lg-6">
       
+      <?php if(session()->getFlashdata('nis')) { ?>
+      <div class="alert alert-danger my-3">
+        <?= session()->getFlashdata('nis') ?>
+      </div>
+      <?php } ?>
+      
       <form method="post" action="<?= base_url('admin/update_siswa') ?>">
         <?= csrf_field() ?>
         <input type="hidden" name="id" value="<?= $siswa['id'] ?>">

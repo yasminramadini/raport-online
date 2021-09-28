@@ -36,7 +36,7 @@
     <!-- navbar -->
     <nav class="navbar navbar-light bg-info">
       <div class="container">
-        <span class="d-flex align-items-center"><img class="navbar-brand mb-0 h1" src="<?= base_url('logo.png') ?>" width="50px"><strong class="fs-3">SMK Informatika</strong></span>
+        <span class="d-flex align-items-center"><img class="navbar-brand mb-0 h1" src="<?= base_url('logo/'.$sekolah[0]['logo'])?>" width="50px"><strong class="fs-5"><?= $sekolah[0]['nama'] ?></strong></span>
       </div>
     </nav>
 

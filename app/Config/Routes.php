@@ -54,7 +54,7 @@ $routes->group('admin', function($routes) {
   $routes->get('detail_siswa', 'Admin::detail_siswa', ['filter' => 'login']);
   $routes->get('create_kelas', 'Admin::create_kelas', ['filter' => 'login']);
   $routes->post('store_kelas', 'Admin::store_kelas', ['filter' => 'login']);
-  $routes->get('edit_kelas', 'Admin::edit_kelas', ['filter' => 'login']);
+  $routes->get('edit_kelas/{:num}', 'Admin::edit_kelas/$1', ['filter' => 'login']);
   $routes->post('update_kelas', 'Admin::update_kelas', ['filter' => 'login']);
   $routes->post('hapus_kelas', 'Admin::hapus_kelas', ['filter' => 'login']);
   $routes->get('tambah_mapel', 'Admin::tambah_mapel', ['filter' => 'login']);
@@ -73,10 +73,10 @@ $routes->group('admin', function($routes) {
   $routes->get('edit_siswa', 'Admin::edit_siswa', ['filter' => 'login']);
   $routes->post('update_siswa', 'Admin::update_siswa', ['filter' => 'login']);
   $routes->post('hapus_siswa', 'Admin::hapus_siswa', ['filter' => 'login']);
-  $routes->get('tambah_raport', 'Admin::tambah_raport', ['filter' => 'login']);
+  $routes->get('tambah_raport/{:num}', 'Admin::tambah_raport/$1', ['filter' => 'login']);
   $routes->post('store_raport', 'Admin::store_raport', ['filter' => 'login']);
   $routes->post('hapus_raport', 'Admin::hapus_raport', ['filter' => 'login']);
-
+  $routes->get('profil', 'Admin::profil', ['filter' => 'login']);
 });
 
 /*

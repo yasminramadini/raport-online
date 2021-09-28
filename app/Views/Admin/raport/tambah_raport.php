@@ -13,15 +13,15 @@
         <input type="hidden" name="id" value="<?= $siswa['id'] ?>">
         <div class="mb-3">
           <label for="nama">Nama Siswa</label>
-          <input type="text" id="nama" name="nama" class="form-control" value="<?= $siswa['nama'] ?>" readonly>
+          <input type="text" id="nama" name="nama" class="form-control" value="<?= esc($siswa['nama']) ?>" readonly>
         </div>
         <div class="mb-3">
           <label for="kelas">Kelas</label>
-          <input type="text" name="kelas" class="form-control" readonly value="<?= $kelas['nama'] ?>">
+          <input type="text" name="kelas" class="form-control" readonly value="<?= esc($kelas['nama']) ?>">
         </div>
         <div class="mb-3">
           <label for="nis">Nomor Induk Siswa (NIS)</label>
-          <input type="number" id="nis" name="nis" class="form-control" readonly value="<?= $siswa['nis'] ?>">
+          <input type="number" id="nis" name="nis" class="form-control" readonly value="<?= esc($siswa['nis']) ?>">
         </div>
         <div class="mb-3">
           <label for="tipe_ujian">Tipe Ujian</label>
@@ -43,7 +43,7 @@
         <?php foreach($mapel as $m) { ?>
         <div class="mb-3">
           <label><?= $m['nama'] ?></label>
-          <input type="number" name="mapel[<?= $m['nama'] ?>]" class="form-control <?= $errors->hasError($m['nama']) ? 'is-invalid' : '' ?>" maxlength="3" min="1" value="<?php old(url_title($m['nama'], '_')) ?>">
+          <input type="number" name="mapel[<?= $m['nama'] ?>]" class="form-control <?= $errors->hasError($m['nama']) ? 'is-invalid' : '' ?>" maxlength="3" min="1" value="<?php old(url_title($m['nama'], '_')) ?>" required min="0">
           <p class="invalid-feedback"><?= $errors->getError(url_title($m['nama'], '_')) ?></p>
         </div>
         <?php } ?>
@@ -57,17 +57,17 @@
         <h3 class="mb-5">Ketidakhadiran</h3>
         <div class="mb-3">
           <label for="sakit">Sakit</label>
-          <input type="number" name="sakit" class="form-control <?= $errors->hasError('sakit') ? 'is-invalid' : '' ?>" value="<?= old('sakit') ?>">
+          <input type="number" name="sakit" class="form-control <?= $errors->hasError('sakit') ? 'is-invalid' : '' ?>" value="<?= old('sakit') ?>" min="0">
           <p><?= $errors->getError('sakit') ?></p>
         </div>
         <div class="mb-3">
           <label for="izin">Izin</label>
-          <input type="number" class="form-control <?= $errors->hasError('izin') ? 'is-invalid' : '' ?>" name="izin" value="<?= old('izin') ?>">
+          <input type="number" class="form-control <?= $errors->hasError('izin') ? 'is-invalid' : '' ?>" name="izin" value="<?= old('izin') ?>" min="0">
           <p><?= $errors->getError('izin') ?></p>
         </div>
         <div class="mb-3">
           <label for="alfa">Tanpa Keterangan</label>
-          <input type="number" class="form-control <?= $errors->hasError('alfa') ? 'is-invalid' : '' ?>" id="alfa" name="alfa" value="<?= old('alfa') ?>">
+          <input type="number" class="form-control <?= $errors->hasError('alfa') ? 'is-invalid' : '' ?>" id="alfa" name="alfa" value="<?= old('alfa') ?>" min="0">
           <p><?= $errors->getError('alfa') ?></p>
         </div>
         <button type="submit" class="btn btn-success">Simpan</button>

@@ -21,8 +21,6 @@ class Admin extends BaseController
     
     public function index()
     {
-      session();
-      
       if(!$this->request->getGet('page')) {
         $current_page = 1;
       }
@@ -34,7 +32,8 @@ class Admin extends BaseController
         'title' => 'Data Raport Siswa',
         'siswa' => $this->siswaModel->join('kelas', 'kelas.id=siswa.id_kelas')->select('siswa.*')->select('kelas.nama AS kelas')->orderBy('id', 'DESC')->paginate(5),
         'pager' => $this->siswaModel->pager,
-        'current_page' => $current_page
+        'current_page' => $current_page,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/siswa/siswa', $data);
@@ -42,8 +41,6 @@ class Admin extends BaseController
     
     public function cari_siswa()
     {
-      session();
-      
       $keyword = $this->request->getPost('keyword');
       $siswa = $this->siswaModel->cari_siswa($keyword);
       $kelas = $this->kelasModel->find($siswa->id_kelas);
@@ -60,7 +57,8 @@ class Admin extends BaseController
         'siswa' => $siswa->paginate(10),
         'kelas' => $kelas,
         'pager' => $this->siswaModel->pager,
-        'current_page' => $current_page
+        'current_page' => $current_page,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/siswa/cari_siswa', $data);
@@ -89,7 +87,8 @@ class Admin extends BaseController
         'title' => 'Mata Pelajaran',
         'mapel' => $mapel->orderBy('id', 'DESC')->paginate(5),
         'pager' => $this->mapelModel->pager,
-        'current_page' => $current_page
+        'current_page' => $current_page,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/mapel/mapel', $data);
@@ -117,7 +116,8 @@ class Admin extends BaseController
         'title' => 'Tipe Ujian',
         'ujian' => $ujian->orderBy('id', 'DESC')->paginate(5),
         'pager' => $this->ujianModel->pager,
-        'current_page' => $current_page
+        'current_page' => $current_page,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/ujian/tipe_ujian', $data);
@@ -145,10 +145,11 @@ class Admin extends BaseController
       }
       
       $data = [
-        'kelas' => $kelas->orderBy('id', 'DESC')->paginate(5),
+        'kelas' => $kelas->orderBy('id', 'DESC')->paginate(10),
         'title' => 'Data Kelas',
         'pager' => $this->kelasModel->pager,
-        'current_page' => $current_page
+        'current_page' => $current_page,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/kelas/data_kelas', $data);
@@ -156,12 +157,11 @@ class Admin extends BaseController
     
     public function data_sekolah()
     {
-      session();
-      
       $data = [
         'sekolah' => $this->sekolahModel->findAll(),
         'title' => 'Data Sekolah',
-        'errors' => $this->validation
+        'errors' => $this->validation,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/sekolah/data_sekolah', $data);
@@ -169,6 +169,10 @@ class Admin extends BaseController
     
     public function detail_siswa($id)
     {
+      if(session()->get('isLogin') !== 'true') {
+        return redirect()->to('/login');
+      }
+      
       $siswa = $this->siswaModel->find($id);
       //ambil nama kelas
       $kelas = $this->kelasModel->find($siswa['id_kelas']);
@@ -178,19 +182,18 @@ class Admin extends BaseController
         'title' => 'Detail Siswa',
         'siswa' => $siswa,
         'kelas' => $kelas,
-        'raport' => $raport
+        'raport' => $raport,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
-        
       return view('admin/siswa/detail_siswa', $data);
     }
     
     public function create_kelas() 
     {
-      session();
-      
       $data = [
         'title' => 'Tambah Kelas',
-        'errors' => $this->validation
+        'errors' => $this->validation,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/kelas/tambah_kelas', $data);
@@ -218,12 +221,15 @@ class Admin extends BaseController
     
     public function edit_kelas($id)
     {
-      session();
+      if(session()->get('isLogin') !== 'true') {
+        return redirect()->to('/login');
+      }
       
       $data = [
         'kelas' => $this->kelasModel->find($id),
         'errors' => $this->validation,
-        'title' => 'Edit Kelas'
+        'title' => 'Edit Kelas',
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/kelas/edit_kelas', $data);
@@ -252,6 +258,13 @@ class Admin extends BaseController
     
     public function hapus_kelas()
     {
+      //cek apakah kelas sudah memiliki siswa 
+      $kelas = $this->kelasModel->find($this->request->getPost('id'));
+      $siswa = $this->siswaModel->where('id_kelas', $kelas['id'])->findAll();
+      if(count($siswa) > 0) {
+        return redirect()->back()->with('dontDelete', 'Kelas tidak bisa dihapus karena sudah memiliki siswa');
+      }
+      
       $this->kelasModel->delete($this->request->getPost('id'));
       session()->setFlashdata('hapus', 'Kelas berhasil dihapus');
       return redirect()->to('/admin/data_kelas');
@@ -259,11 +272,10 @@ class Admin extends BaseController
     
     public function tambah_mapel()
     {
-      session();
-      
       $data = [
         'title' => 'Tambah Mata Pelajaran',
-        'errors' => $this->validation
+        'errors' => $this->validation,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
       
       return view('admin/mapel/tambah_mapel', $data);
@@ -274,7 +286,8 @@ class Admin extends BaseController
       $data = [
         'nama' => $this->request->getPost('nama'),
         'tipe' => $this->request->getPost('tipe'),
-        'kkm' => $this->request->getPost('kkm')
+        'kkm' => $this->request->getPost('kkm'),
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       //validasi data 
@@ -294,12 +307,15 @@ class Admin extends BaseController
     
     public function edit_mapel($id)
     {
-      session();
+      if(session()->get('isLogin') !== 'true') {
+        return redirect()->to('/login');
+      }
       
       $data = [
         'title' => 'Edit Mata Pelajaran',
         'mapel' => $this->mapelModel->find($id),
-        'errors' => $this->validation
+        'errors' => $this->validation,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/mapel/edit_mapel', $data);
@@ -310,7 +326,8 @@ class Admin extends BaseController
       $data = [
         'nama' => $this->request->getPost('nama'),
         'tipe' => $this->request->getPost('tipe'),
-        'kkm' => $this->request->getPost('kkm')
+        'kkm' => $this->request->getPost('kkm'),
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       //validasi data 
@@ -331,6 +348,14 @@ class Admin extends BaseController
     public function hapus_mapel()
     {
       $id = $this->request->getPost('id');
+      
+      //cek apakah mapel sudah memiliki nilai 
+      $mapel = $this->mapelModel->find($id);
+      $nilai = $this->nilaiModel->where('id_mapel', $mapel['id'])->findAll();
+      if(count($nilai) > 0) {
+        return redirect()->back()->with('dontDelete', 'Mapel tidak bisa dihapus karena sudah memiliki beberapa nilai');
+      }
+      
       $this->mapelModel->delete($id);
       session()->setFlashdata('hapus', 'Mata Pelajaran berhasil dihapus');
       return redirect()->to('/admin/mapel');
@@ -385,11 +410,10 @@ class Admin extends BaseController
     
     public function tambah_tipe_ujian()
     {
-      session();
-      
       $data = [
         'title' => 'Tambah Tipe Ujian',
-        'errors' => $this->validation
+        'errors' => $this->validation,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
       
       return view('admin/ujian/tambah_tipe_ujian', $data);
@@ -418,12 +442,15 @@ class Admin extends BaseController
     
     public function edit_tipe_ujian($id)
     {
-      session();
-      
+      if(session()->get('isLogin') !== 'true')
+      {
+        return redirect()->to('/login');
+      }
       $data = [
         'ujian' => $this->ujianModel->find($id),
         'title' => 'Edit Tipe Ujian',
-        'errors' => $this->validation
+        'errors' => $this->validation,
+        'sekolah' => $this->sekolahModel->findAll()
         ];
         
       return view('admin/ujian/edit_tipe_ujian', $data);
@@ -453,6 +480,14 @@ class Admin extends BaseController
     public function hapus_tipe_ujian()
     {
       $id = $this->request->getPost('id');
+      
+      //cek apakah tipe ujian sudah memiliki raport 
+      $tipe_ujian = $this->ujianModel->find($id);
+      $raport = $this->raportModel->where('id_ujian', $tipe_ujian['id'])->findAll();
+      if(count($raport) > 0) {
+        return redirect()->back()->with('dontDelete', 'Tipe ujian tidak bisa dihapus karena sudah memiliki raport');
+      }
+      
       $this->ujianModel->delete($id);
       session()->setFlashdata('hapus', 'Tipe ujian berhasil dihapus');
       return redirect()->to('/admin/tipe_ujian');
@@ -460,12 +495,11 @@ class Admin extends BaseController
     
   public function tambah_siswa()
   {
-    session();
-    
     $data = [
       'title' => 'Tambah Siswa',
       'errors' => $this->validation,
-      'daftarKelas' => $this->kelasModel->orderBy('nama', 'ASC')->findAll()
+      'daftarKelas' => $this->kelasModel->orderBy('nama', 'ASC')->findAll(),
+      'sekolah' => $this->sekolahModel->findAll()
       ];
       
     return view('admin/siswa/tambah_siswa', $data);
@@ -503,7 +537,9 @@ class Admin extends BaseController
   
   public function edit_siswa($id)
   {
-    session();
+    if(session()->get('isLogin') !== 'true') {
+      return redirect()->to('/login');
+    }
     
     $siswa = $this->siswaModel->find($id);
     //ambil nama kelas 
@@ -514,7 +550,8 @@ class Admin extends BaseController
       'siswa' => $siswa,
       'kelas' => $kelas,
       'daftarKelas' => $this->kelasModel->orderBy('nama', 'ASC')->findAll(),
-      'errors' => $this->validation
+      'errors' => $this->validation,
+      'sekolah' => $this->sekolahModel->findAll()
       ];
       
     return view('admin/siswa/edit_siswa', $data);
@@ -537,6 +574,13 @@ class Admin extends BaseController
       return redirect()->back()->withInput();
     }
     
+    //jika nis sudah dipakai siswa lain 
+    $cekNis = $this->siswaModel->where('nis', $data['nis'])->where('nama !=', $data['nama'])->first();
+    if($cekNis) {
+      session()->setFlashdata('nis', 'NIS sudah dipakai');
+      return redirect()->back()->withInput();
+    }
+    
     //jika tidak ada error, update data 
     //ambil id kelas 
     $id_kelas = $this->kelasModel->where('nama', $data['kelas'])->first();
@@ -553,6 +597,22 @@ class Admin extends BaseController
   public function hapus_siswa()
   {
     $id = $this->request->getPost('id');
+    $siswa = $this->siswaModel->find($id);
+    
+    //hapus raport siswanya juga
+    $raport = $this->raportModel->where('id_siswa', $siswa['id'])->findAll();
+    
+    if(count($raport) > 0) {
+      foreach($raport as $r) {
+        $nilai = $this->nilaiModel->where('id_raport', $r['id'])->findAll();
+        foreach($nilai as $n) {
+          //hapus juga nilai raportnya
+          $this->nilaiModel->query('DELETE FROM nilai WHERE id_raport =' . $r['id']);
+          }
+        }
+        $this->raportModel->query('DELETE FROM raport WHERE id_siswa =' .  $siswa['id']);
+    }
+  
     $this->siswaModel->delete($id);
     session()->setFlashdata('hapus', 'Siswa berhasil dihapus');
     return redirect()->to('/admin'); 
@@ -560,8 +620,9 @@ class Admin extends BaseController
   
   public function tambah_raport($id)
   {
-    session();
-    
+    if(session()->get('isLogin') !== 'true') {
+      return redirect()->to('/login');
+    }
     $siswa = $this->siswaModel->find($id);
     
     $data = [
@@ -569,8 +630,9 @@ class Admin extends BaseController
       'siswa' => $siswa,
       'errors' => $this->validation,
       'ujian' => $this->ujianModel->findAll(),
-      'kelas' => $this->kelasModel->find($siswa['id']),
-      'mapel' => $this->mapelModel->findAll()
+      'kelas' => $this->kelasModel->find($siswa['id_kelas']),
+      'mapel' => $this->mapelModel->findAll(),
+      'sekolah' => $this->sekolahModel->findAll()
       ];
       
     return view('admin/raport/tambah_raport', $data);

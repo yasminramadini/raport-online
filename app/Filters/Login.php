@@ -10,7 +10,7 @@ class Login implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        if(session()->get('isLogin') !== 'true') {
+        if(session()->get('isLogin') !== 'true' && !session()->get('isLogin')) {
           return redirect()->to('/login');
         }
     }

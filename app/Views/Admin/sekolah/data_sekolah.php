@@ -21,17 +21,17 @@
         <input type="hidden" name="gambarLama" value="<?= $sekolah[0]['logo'] ?>">
         <div class="mb-3">
           <label for="nama">Nama Sekolah</label>
-          <input type="text" value="<?= $sekolah[0]['nama'] ?>" readonly id="nama" class="form-control <?= $errors->hasError('nama') ? 'is-invalid' : '' ?>" name="nama">
+          <input type="text" value="<?= esc($sekolah[0]['nama']) ?>" readonly id="nama" class="form-control <?= $errors->hasError('nama') ? 'is-invalid' : '' ?>" name="nama">
           <p class="invalid-feedback"><?= $errors->getError('nama') ?></p>
         </div>
         <div class="mb-3">
           <label for="kepsek">Kepala Sekolah</label>
-          <input type="text" name="kepsek" value="<?= $sekolah[0]['kepsek'] ?>" id="kepsek" class="form-control <?= $errors->hasError('kepsek') ? 'is-invalid' : '' ?>" value="<?= old('kepsek') ?>" readonly>
+          <input type="text" name="kepsek" value="<?= esc($sekolah[0]['kepsek']) ?>" id="kepsek" class="form-control <?= $errors->hasError('kepsek') ? 'is-invalid' : '' ?>" value="<?= old('kepsek') ?>" readonly>
           <p class="invalid-feedback"><?= $errors->getError('kepsek') ?></p>
         </div>
         <div class="mb-3">
           <label for="alamat">Alamat Sekolah</label>
-          <textarea class="form-control <?= $errors->hasError('alamat') ? 'is-invalid' : '' ?>" id="alamat" readonly name="alamat"><?= $sekolah[0]['alamat'] ?></textarea>
+          <textarea class="form-control <?= $errors->hasError('alamat') ? 'is-invalid' : '' ?>" id="alamat" readonly name="alamat"><?= esc($sekolah[0]['alamat']) ?></textarea>
           <p class="invalid-feedback"><?= $errors->getError('alamat') ?></p>
         </div>
         <div class="mb-3">

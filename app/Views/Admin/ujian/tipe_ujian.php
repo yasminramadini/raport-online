@@ -24,13 +24,17 @@
   </div>
   <?php } ?>
   
+  <?php if(session()->getFlashdata('dontDelete')) { ?>
+  <script>alert('Tipe ujian tidak bisa dihapus karena sudah memiliki raport. Silahkan hapus raportnya terlebih dahulu')</script>
+  <?php } ?>
+  
   <div class="row mt-5">
     <div class="col-lg-6">
       <a href="<?= base_url('admin/tambah_tipe_ujian') ?>" class="my-3 btn btn-primary">Tambah Ujian</a>
       
       <form method="post" action="">
         <div class="input-group">
-          <input type="search" name="keyword" class="form-control" placeholder="Cari tipe ujian...">
+          <input type="search" name="keyword" class="form-control" placeholder="Cari tipe ujian..." autocomplete="off">
           <button class="btn btn-success" name="cari">Cari</button>
         </div>
       </form>
@@ -54,7 +58,7 @@
             <?php foreach ($ujian as $u) { ?>
             <tr>
               <td><?= $i++ ?></td>
-              <td><?= $u['nama'] ?></td>
+              <td><?= esc($u['nama']) ?></td>
               <td>
                 <form method="post" action="/admin/hapus_tipe_ujian">
                 <input type="hidden" name="id" value="<?= $u['id'] ?>">
