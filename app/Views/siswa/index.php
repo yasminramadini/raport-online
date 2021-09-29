@@ -12,7 +12,7 @@
     <form action="/siswa/cari_raport" method="post">
       <?= csrf_field() ?>
       <div class="input-group" id="myForm">
-        <input type="number" name="keyword" class="form-control" id="keyword" placeholder="Masukkan NIS" required>
+        <input type="number" name="keyword" class="form-control" id="keyword" placeholder="Masukkan NIS" required autocomplete="off">
         <button id="submit" type="submit" class="btn btn-success">Cari</button>
       </div>
       <p class="invalid-feedback" id="error"></p>

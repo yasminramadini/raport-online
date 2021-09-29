@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 
 <section class="raport bg-white" style="border-radius: 10px">
-  <h1 class="my-4">Tambah Mata Pelajaran</h1>
+  <h1 class="my-4">Edit Mata Pelajaran</h1>
   <hr>
   <div class="row mt-5">
     <div class="col-lg-6">

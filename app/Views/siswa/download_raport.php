@@ -18,6 +18,18 @@
   </div>
   <?php } ?>
   
+  <?php if(count($raport) === 0) { ?>
+  <div class="alert alert-warning mt-3">
+    Tidak ada raport siswa
+  </div>
+  <?php } ?>
+  
+  <?php if(!$siswa) { ?>
+  <div class="alert alert-warning mt-3">
+    NIS siswa tidak ditemukan
+  </div>
+  <?php } ?>
+  
   </div>
 </div>
 

@@ -73,6 +73,27 @@ class Validation
         ]
       ];
       
+    public $update_mapel = [
+      'nama' => 'required|alpha_numeric_punct',
+      'tipe' => 'required|alpha_numeric_space',
+      'kkm' => 'required|integer'
+      ];
+      
+    public $update_mapel_errors = [
+      'nama' => [
+        'required' => 'nama mapel wajib diisi',
+        'alpha_numeric_punct' => 'nama mapel tidak valid',
+        ],
+      'tipe' => [
+        'required' => 'tipe mapel wajib diisi',
+        'alpha_numeric_space' => 'nama mapel tidak valid'
+        ],
+      'kkm' => [
+        'required' => 'KKM wajib diisi',
+        'integer' => 'KKM harus angka'
+        ]
+      ];
+      
       public $sekolah = [
         'nama' => 'alpha_numeric_space',
         'kepsek' => 'alpha_numeric_space',
@@ -224,6 +245,23 @@ class Validation
       'password' => [
         'min_length' => 'password minimal 8 karakter',
         'required' => 'password wajib diisi'
+        ]
+      ];
+      
+    public $update_profil = [
+      'username' => 'required|alpha_numeric|max_length[10]',
+      'email' => 'required|valid_emails'
+      ];
+      
+    public $update_profil_errors = [
+      'username' => [
+        'required' => 'username wajib diisi',
+        'alpha_numeric' => 'username hanya boleh huruf dan angka, tanpa spasi',
+        'max_length' => 'username maksimal 10 karakter'
+        ],
+      'email' => [
+        'required' => 'email wajib diisi',
+        'valid_emails' => 'email tidak valid'
         ]
       ];
     //--------------------------------------------------------------------

@@ -56,7 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php $i = ($current_page * 5) - (5 - 1) ?>
+            <?php $i = ($current_page * 10) - (10 - 1) ?>
             <?php foreach($mapel as $m) { ?>
             <tr>
               <td><?= $i++ ?></td>
@@ -74,6 +74,9 @@
             <?php } ?>
           </tbody>
         </table>
+        <?php if(count($mapel) === 0) { ?>
+        <div class="alert alert-warning">Tidak ada data</div>
+        <?php } ?>
         <?= $pager->links() ?>
       </div>
       

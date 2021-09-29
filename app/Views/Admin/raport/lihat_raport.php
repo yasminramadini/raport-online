@@ -159,7 +159,7 @@
       </section>
       
       <?php
-      $hari = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wenesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'];
+      $hari = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'];
       $namaHari = $hari[date('l', strtotime($raport['created_at']))];
       ?>
       <p style="margin-top: 30px;"><?= $namaHari . ', ' . date('d F Y', strtotime($raport['created_at'])) ?></p>

@@ -68,6 +68,9 @@
                 <a href="<?= base_url('admin/data_sekolah') ?>" class="nav-link text-white <?= $uri === 'admin/data_sekolah' ? 'active' : '' ?>"><i class="bi bi-building me-2"></i>Data Sekolah</a>
               </li>
               <li class="nav-item">
+                <a href="<?= base_url('admin/profil') ?>" class="text-white nav-link <?= $uri === 'admin/profil' ? 'active' : '' ?>"><i class="bi bi-person me-2"></i>Profil Saya</a>
+              </li>
+              <li class="nav-item">
                 <a href="<?= base_url('logout') ?>" class="nav-link text-white"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a>
               </li>
             </ul>

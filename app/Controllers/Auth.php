@@ -103,7 +103,8 @@ class Auth extends BaseController
           $data = [
             'role' => $cekUsername['role'],
             'username' => $cekUsername['username'],
-            'isLogin' => 'true'
+            'isLogin' => 'true',
+            'id' => $cekUsername['id']
             ];
           session()->set($data);
           

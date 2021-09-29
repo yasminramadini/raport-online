@@ -16,7 +16,7 @@ class Admin extends BaseController
       $this->siswaModel = new \App\Models\SiswaModel();
       $this->nilaiModel = new \App\Models\NilaiModel();
       $this->raportModel = new \App\Models\RaportModel();
-      session();
+      $this->userModel = new \App\Models\UserModel();
     }
     
     public function index()
@@ -30,7 +30,7 @@ class Admin extends BaseController
       
       $data = [
         'title' => 'Data Raport Siswa',
-        'siswa' => $this->siswaModel->join('kelas', 'kelas.id=siswa.id_kelas')->select('siswa.*')->select('kelas.nama AS kelas')->orderBy('id', 'DESC')->paginate(5),
+        'siswa' => $this->siswaModel->join('kelas', 'kelas.id=siswa.id_kelas')->select('siswa.*')->select('kelas.nama AS kelas')->orderBy('id', 'DESC')->paginate(10),
         'pager' => $this->siswaModel->pager,
         'current_page' => $current_page,
         'sekolah' => $this->sekolahModel->findAll()
@@ -85,7 +85,7 @@ class Admin extends BaseController
       
       $data = [
         'title' => 'Mata Pelajaran',
-        'mapel' => $mapel->orderBy('id', 'DESC')->paginate(5),
+        'mapel' => $mapel->orderBy('id', 'DESC')->paginate(10),
         'pager' => $this->mapelModel->pager,
         'current_page' => $current_page,
         'sekolah' => $this->sekolahModel->findAll()
@@ -114,7 +114,7 @@ class Admin extends BaseController
       
       $data = [
         'title' => 'Tipe Ujian',
-        'ujian' => $ujian->orderBy('id', 'DESC')->paginate(5),
+        'ujian' => $ujian->orderBy('id', 'DESC')->paginate(10),
         'pager' => $this->ujianModel->pager,
         'current_page' => $current_page,
         'sekolah' => $this->sekolahModel->findAll()
@@ -331,7 +331,7 @@ class Admin extends BaseController
         ];
         
       //validasi data 
-      $this->validation->run($data, 'mapel');
+      $this->validation->run($data, 'update_mapel');
       $errors = $this->validation->getErrors();
       
       //jika ada error 
@@ -738,6 +738,61 @@ class Admin extends BaseController
     }
       
     return view('admin/raport/lihat_raport', $data);
+  }
+  
+  public function profil()
+  {
+    $data = [
+      'title' => 'Profil Saya',
+      'user' => $this->userModel->find(session()->get('id')),
+      'errors' => $this->validation,
+      'sekolah' => $this->sekolahModel->findAll()
+      ];
+
+    return view('admin/profil/profil_saya', $data);
+  }
+  
+  public function update_profil()
+  {
+    $data = [
+      'username' => $this->request->getPost('username'),
+      'email' => $this->request->getPost('email')
+      ];
+      
+    //validasi 
+    $this->validation->run($data, 'update_profil');
+    $errors = $this->validation->getErrors();
+    
+    //cek apakah username sudah dipakai 
+    $cekUsername = $this->userModel->where('username', $data['username'])->where('id !=', $this->request->getPost('id'))->findAll();
+    $cekEmail = $this->userModel->where('email', $data['email'])->where('id !=', $this->request->getPost('id'))->findAll();
+    
+    if($errors) {
+      return redirect()->back()->withInput();
+    }
+    
+    if(count($cekUsername) > 0) {
+      session()->setFlashdata('username', 'Username sudah dipakai');
+      return redirect()->back()->withInput();
+    }
+    
+    if(count($cekEmail) > 0) {
+      session()->setFlashdata('email', 'Email sudah dipakai');
+      return redirect()->back()->withInput();
+    }
+    
+    $this->userModel->update($this->request->getPost('id'), $data);
+    session()->set('username', $data['username']);
+    session()->setFlashdata('update_profil', 'Profil berhasil diupdate');
+    return redirect()->to('/admin/profil');
+  }
+  
+  public function hapus_profil()
+  {
+    $id = $this->request->getPost('id');
+    $this->userModel->delete($id);
+    session()->destroy();
+    return redirect()->to('/login');
   }
     
 }

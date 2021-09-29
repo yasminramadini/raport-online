@@ -46,7 +46,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php $i = ($current_page * 5) - (5 - 1) ?>
+            <?php $i = ($current_page * 10) - (10 - 1) ?>
             <?php foreach ($siswa as $s) { ?>
             <tr>
               <td><?= $i++ ?></td>
